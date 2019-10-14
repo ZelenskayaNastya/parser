@@ -11,18 +11,17 @@ parser.add_argument('--val', type=str)
 argum = parser.parse_args()
 
 
-
-
 if argum.val and argum.key:
     storage_path = os.path.join(tempfile.gettempdir(), 'storage.data')
     if os.path.isfile(storage_path) and os.path.getsize(storage_path) != 0:
-        with open(storage_path, 'w+') as f:
+        with open(storage_path, 'r') as f:
             data = json.load(f)
             try:
                 if argum.key in data:
                     print(data[argum.key])
                 data[argum.key].append(argum.val)
-                json.dump(data, f)
+                with open(storage_path, 'w') as f:
+                    json.dump(data, f)
             except:
                 data[argum.key] = [argum.val]
                 with open(storage_path, "w") as f:
