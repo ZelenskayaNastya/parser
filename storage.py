@@ -1,19 +1,20 @@
-import argparse
-import json
-import os
-import tempfile
-
+import argparse, json, os, tempfile
 
 
 parser = argparse.ArgumentParser()
+
 parser.add_argument('--key', type=str)
 parser.add_argument('--val', type=str)
+
 argum = parser.parse_args()
 
 
 if argum.val and argum.key:
     storage_path = os.path.join(tempfile.gettempdir(), 'storage.data')
-    if os.path.isfile(storage_path) and os.path.getsize(storage_path) != 0:
+    isfile = os.path.isfile(storage_path)
+    getsize = os.path.getsize(storage_path)
+
+    if isfile and getsize != 0:
         with open(storage_path, 'r') as f:
             data = json.load(f)
             try:
@@ -31,15 +32,17 @@ if argum.val and argum.key:
             dict = {}
             dict[argum.key] = [argum.val]
             json.dump(dict, f)
-
-
 else:
     storage_path = os.path.join(tempfile.gettempdir(), 'storage.data')
-    if os.path.isfile(storage_path) and os.path.getsize(storage_path) != 0:
+    isfile = os.path.isfile(storage_path)
+    getsize = os.path.getsize(storage_path)
+
+    if isfile and getsize != 0:
         with open(storage_path, "r") as f:
             data = json.load(f)
             if argum.key in data.keys():
-                print(', '.join(data[argum.key]))
+                values = data[argum.key]
+                print(', '.join(values))
             else:
                 print('None')
     else:
